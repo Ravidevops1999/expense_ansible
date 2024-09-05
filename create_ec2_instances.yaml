@@ -25,7 +25,7 @@
       ansible.builtin.debug:
         msg: "{{ ec2_instances }}"
 
-    - name: Add new.foo.com as an A record with 3 IPs and wait until the changes have been replicated
+    - name: create route r53
       amazon.aws.route53:
         state: present
         zone: "{{ zone }}"
@@ -35,6 +35,19 @@
         value: "{{ item.instances[0].private_ip_address }}"
         wait: true
         overwrite: true
-      loop: "{{ ec2_instances.results }}"      
+      loop: "{{ ec2_instances.results }}" 
+
+    - name: create route r53 public record for frontend
+      amazon.aws.route53:
+        state: present
+        zone: "{{ zone }}"
+        record: "{{ item.item }}.{{ zone }}"
+        type: A
+        ttl: 1
+        value: "{{ item.instances[0].public_ip_address }}"
+        wait: true
+        overwrite: true
+      loop: "{{ ec2_instances.results }}" 
+      when: ec2_instances.results.item == "frontend"      
 
     
