@@ -6,4 +6,13 @@
     ansible.builtin.command: dnf module disable nodejs -y
 
   - name: enabling nodejs:20
-    ansible.builtin.command: dnf module enable nodejs:20 -y  
+    ansible.builtin.command: dnf module enable nodejs:20 -y 
+
+  - name: install modejs
+    ansible.builtin.nodejs:
+      name: nodejs
+      state: present
+
+  - name: create expense user
+    ansible.builtin.user:
+      name: expense       
