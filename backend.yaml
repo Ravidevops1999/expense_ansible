@@ -3,7 +3,7 @@
   become: yes
   vars:
     mysql_root_password: ExpenseApp@01
-    login_host: 172.31.45.12
+    login_host: 172.31.45.12   
 
   tasks:
   - name: disabling nodejs
